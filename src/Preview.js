@@ -28,19 +28,29 @@ function Preview({ data }) {
       {data ? (
         <Card
           cover={
-            <picture>
-              <source
-                srcSet={data.images.fixed_height.webp}
-                type="image/webp"
-              />
-              <source srcSet={data.images.fixed_height.url} type="image/jpeg" />
-              <img
-                alt={data.title}
-                src={data.images.fixed_height.url}
-                width={data.images.fixed_height.width}
-                height={data.images.fixed_height.height}
-              />
-            </picture>
+            <div className={styles.imageWrapper}>
+              <picture>
+                <source
+                  srcSet={data.images.fixed_height.webp}
+                  type="image/webp"
+                />
+                <source
+                  srcSet={data.images.fixed_height.url}
+                  type="image/jpeg"
+                />
+                <img
+                  alt={data.title}
+                  src={data.images.fixed_height.url}
+                  width={data.images.fixed_height.width}
+                  height={data.images.fixed_height.height}
+                  style={{
+                    maxWidth: '100%',
+                    height: `${(data.images.fixed_height.height * 100) /
+                      data.images.fixed_height.width}%`,
+                  }}
+                />
+              </picture>
+            </div>
           }
         >
           <Card.Meta

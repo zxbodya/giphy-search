@@ -4,16 +4,31 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import InfiniteLoader from 'react-window-infinite-loader';
 import SearchLoader from './SearchLoader';
 import Preview, { estimatePreviewSize } from './Preview';
+import { Col, Row } from 'antd';
 
 function Search({ query, view }) {
   return (
     <SearchLoader query={query}>
       {({ totalCount, isItemLoaded, loadMoreItems, getItem, query }) => {
-        const Row = ({ index, style }) => {
+        const PreviewRow = ({ index, style }) => {
           const data = getItem(index);
           return (
             <div style={style}>
-              <Preview data={data} />
+              {view === 'list' ? (
+                <Preview data={data} />
+              ) : (
+                <Row>
+                  <Col span={8}>
+                    <Preview data={data} />
+                  </Col>
+                  <Col span={8}>
+                    <Preview data={data} />
+                  </Col>
+                  <Col span={8}>
+                    <Preview data={data} />
+                  </Col>
+                </Row>
+              )}
             </div>
           );
         };
@@ -26,7 +41,7 @@ function Search({ query, view }) {
         return (
           <AutoSizer>
             {({ width, height }) => (
-              // key to force recreating loader component after query changed
+              // key to force recreating loader component after query or view changed
               <InfiniteLoader
                 key={query}
                 isItemLoaded={isItemLoaded}
@@ -42,7 +57,7 @@ function Search({ query, view }) {
                     itemCount={totalCount}
                     itemSize={getItemSize}
                   >
-                    {Row}
+                    {PreviewRow}
                   </VariableSizeList>
                 )}
               </InfiniteLoader>
