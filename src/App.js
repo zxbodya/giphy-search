@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Radio, Icon, Input, Layout, Typography, Button } from 'antd';
 import styles from './App.module.css';
-import Preview from './Preview';
+import Search from './Search';
 
 const { Title, Paragraph } = Typography;
 
@@ -10,7 +10,6 @@ class App extends Component {
     query: '',
     view: 'list',
   };
-
   render() {
     const { view, query } = this.state;
     return (
@@ -66,76 +65,9 @@ class App extends Component {
               </Typography>
             </div>
           ) : (
-            <div style={{ height: '100%', overflow: 'scroll' }}>
-              <Preview />
-              <Preview
-                data={{
-                  user: {
-                    avatar_url:
-                      'https://media4.giphy.com/avatars/leroypatterson/kmR9dQjdzWa3.gif',
-                    display_name: 'Leroy Patterson',
-                  },
-                  images: {
-                    fixed_height: {
-                      url:
-                        'https://media3.giphy.com/media/CjmvTCZf2U3p09Cn0h/200.gif',
-                      width: '212',
-                      height: '200',
-                      size: '847527',
-                      mp4:
-                        'https://media3.giphy.com/media/CjmvTCZf2U3p09Cn0h/200.mp4',
-                      mp4_size: '169611',
-                      webp:
-                        'https://media3.giphy.com/media/CjmvTCZf2U3p09Cn0h/200.webp',
-                      webp_size: '469104',
-                    },
-                  },
-                  title: 'ready lets go GIF by Leroy Patterson',
-                }}
-              />
-              <Preview
-                data={{
-                  images: {
-                    fixed_height: {
-                      url:
-                        'https://media3.giphy.com/media/JIX9t2j0ZTN9S/200.gif',
-                      width: '200',
-                      height: '200',
-                      size: '632576',
-                      mp4:
-                        'https://media3.giphy.com/media/JIX9t2j0ZTN9S/200.mp4',
-                      mp4_size: '17842',
-                      webp:
-                        'https://media3.giphy.com/media/JIX9t2j0ZTN9S/200.webp',
-                      webp_size: '158680',
-                    },
-                  },
-                  title: 'funny cat GIF',
-                }}
-              />
-              <Preview
-                data={{
-                  images: {
-                    fixed_height: {
-                      url:
-                        'https://media0.giphy.com/media/WXB88TeARFVvi/200.gif',
-                      width: '159',
-                      height: '200',
-                      size: '103637',
-                      mp4:
-                        'https://media0.giphy.com/media/WXB88TeARFVvi/200.mp4',
-                      mp4_size: '28881',
-                      webp:
-                        'https://media0.giphy.com/media/WXB88TeARFVvi/200.webp',
-                      webp_size: '143970',
-                    },
-                  },
-                }}
-              />
-            </div>
+            <Search query={query} view={view} />
           )}
         </Layout.Content>
-        <Layout.Footer>Footer</Layout.Footer>
       </Layout>
     );
   }

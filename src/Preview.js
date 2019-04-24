@@ -2,6 +2,26 @@ import React from 'react';
 import { Avatar, Card, Skeleton, Spin } from 'antd';
 import styles from './Preview.module.css';
 
+export function estimatePreviewSize(data) {
+  let res = 200; // image
+  res += 10 + 2;
+
+  // data is loaded and there are additional information to display
+  let titleHeight = 13;
+  let avatarHeight = 32;
+  let skeletonSize = 86;
+
+  res += 24 * 2; // card padding
+
+  if (!data) {
+    res += skeletonSize; // skeleton size
+  } else if (data.title || data.user) {
+    if (data.title) res += titleHeight; // image title
+    if (data.user) res += avatarHeight; // user avatar and name
+  }
+  return res;
+}
+
 function Preview({ data }) {
   return (
     <div className={styles.container}>
