@@ -1,0 +1,28 @@
+.container {
+  height: 100%;
+}
+
+.searchBar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.searchInput {
+  padding-right: 20px;
+}
+
+.buttons {
+  flex-shrink: 0;
+}
+
+.placeholderWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  padding: 0 50px;
+  text-align: center;
+}
+

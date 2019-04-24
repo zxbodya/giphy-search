@@ -1,0 +1,12 @@
+.container {
+  padding: 5px;
+}
+
+.imagePlaceholder{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 200px;
+}
