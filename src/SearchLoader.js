@@ -41,34 +41,50 @@ class SearchLoader extends React.Component {
   loadMoreItems = (startIndex, stopIndex) => {
     const { pages, cache, totalCount, query } = this.state;
 
-    let limit = PAGE_SIZE;
-    let offset = Math.floor(startIndex / PAGE_SIZE) * PAGE_SIZE;
-
     const results = [];
 
-    while (offset < stopIndex) {
-      if (!pages.has(offset)) {
-        const loadPromise = loadSearchResults(query, limit, offset).then(
-          res => {
-            const {
-              data,
-              pagination: { total_count, offset },
-            } = res.data;
+    for (
+      let offset = Math.floor(startIndex / PAGE_SIZE) * PAGE_SIZE;
+      offset < stopIndex;
+      offset += PAGE_SIZE
+    ) {
+      const requestOffset = offset;
+      if (!pages.has(requestOffset)) {
+        const loadPromise = loadSearchResults(
+          query,
+          PAGE_SIZE,
+          requestOffset
+        ).then(res => {
+          const {
+            data,
+            // offset in response is not reliable,
+            // and would equals "0" for non existing pages
+            pagination: { total_count, count },
+          } = res.data;
 
-            data.forEach((item, index) => {
-              cache.set(index + offset, item);
-            });
+          data.forEach((item, index) => {
+            cache.set(index + requestOffset, item);
+          });
 
-            if (total_count !== totalCount) {
-              // replace initial count
-              this.setState({ totalCount: total_count });
-            }
+          if (total_count !== totalCount) {
+            this.setState({ totalCount: total_count });
           }
-        );
-        pages.set(offset, loadPromise);
+
+          // woraround for gliphy api returning wrong total_count
+          if (count === 0 && totalCount > requestOffset) {
+            // case when reply is for page after last one
+            this.setState({ totalCount: requestOffset });
+          } else if (
+            count !== PAGE_SIZE &&
+            totalCount > requestOffset + count
+          ) {
+            // case when reply is for last page with results
+            this.setState({ totalCount: requestOffset + count });
+          }
+        });
+        pages.set(requestOffset, loadPromise);
         results.push(loadPromise);
       }
-      offset += PAGE_SIZE;
     }
 
     if (results.length) return Promise.all(results);
