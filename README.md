@@ -5,7 +5,7 @@ App uses the GIPHY image search API and shows the results with infinite scroll i
 User interface is build using [`antd`](https://ant.design/).
 
 For displaying a search results it is using [`react-window`](https://github.com/bvaughn/react-window)
-to have virtualized scrolling which helps a lot with performance to display animated images, because only visible part of them is actually rendered in dom.
+to have virtualized scrolling to have better performance for displaying animated images.
 
 Also used related libraries:
  - [`react-virtualized-auto-sizer`](https://npmjs.com/package/https://github.com/bvaughn/react-virtualized-auto-sizer) to scale it for container size
@@ -17,7 +17,7 @@ Components in application:
 - `App` root component, provides search box, and buttons to change the view
 - `Search` main part of application responsible for displaying search results for given search query and view setting
 - `SearchLoader` component responsible for providing data to be displayed in search results
-- `Preview` - displaying individual search result, or placeholder while it is loading  
+- `Preview` - displaying individual giphy search result, or placeholder when it is not loaded yet
 
 ---
 
