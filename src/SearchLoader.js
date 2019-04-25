@@ -1,13 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+import { loadSearchResults } from './giphy';
 
 const PAGE_SIZE = 50;
-const API_KEY = 'bGQxvVa3nMcCBo770QLYqqszXmudk6uE&q';
-
-function loadSearchResults(query, limit, offset) {
-  const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}=${query}&limit=${limit}&offset=${offset}&rating=G&lang=en`;
-  return axios.get(url);
-}
 
 function createSearchState(query) {
   return {
@@ -58,7 +52,7 @@ class SearchLoader extends React.Component {
           const {
             data,
             // offset in response is not reliable,
-            // and would equals "0" for non existing pages
+            // and would equal "0" for non existing pages
             pagination: { total_count, count },
           } = res.data;
 
