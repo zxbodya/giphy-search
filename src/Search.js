@@ -9,35 +9,54 @@ import { Col, Row } from 'antd';
 function Search({ query, view }) {
   return (
     <SearchLoader query={query}>
-      {({ totalCount, isItemLoaded, loadMoreItems, getItem, query }) => {
-        const PreviewRow = ({ index, style }) => {
-          const data = getItem(index);
-          return (
+      {props => {
+        let { getItem, query } = props;
+        let totalCount, isItemLoaded, loadMoreItems;
+        let PreviewRow, getItemSize;
+        if (view === 'list') {
+          totalCount = props.totalCount;
+          isItemLoaded = props.isItemLoaded;
+          loadMoreItems = props.loadMoreItems;
+
+          PreviewRow = ({ index, style }) => (
             <div style={style}>
-              {view === 'list' ? (
-                <Preview data={data} />
-              ) : (
-                <Row>
-                  <Col span={8}>
-                    <Preview data={data} />
-                  </Col>
-                  <Col span={8}>
-                    <Preview data={data} />
-                  </Col>
-                  <Col span={8}>
-                    <Preview data={data} />
-                  </Col>
-                </Row>
-              )}
+              <Preview data={getItem(index)} />
             </div>
           );
-        };
 
-        function getItemSize(index) {
-          const data = getItem(index);
-          return estimatePreviewSize(data);
+          getItemSize = index => estimatePreviewSize(getItem(index));
+        } else {
+          const count = 3;
+          totalCount = Math.ceil(props.totalCount / count);
+          const getIndices = index => {
+            const indices = [];
+            for (let i = 0; i < count && index * count + i < totalCount; i += 1)
+              indices.push(index * count + i);
+            return indices;
+          };
+
+          isItemLoaded = index => getIndices(index).every(props.isItemLoaded);
+
+          loadMoreItems = (start, stop) =>
+            props.loadMoreItems(start * count, stop * count);
+
+          PreviewRow = ({ index, style }) => (
+            <div style={style}>
+              <Row>
+                {getIndices(index).map(i => (
+                  <Col span={24 / count} key={i}>
+                    <Preview data={getItem(i)} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          );
+
+          getItemSize = index =>
+            Math.max(
+              ...getIndices(index).map(i => estimatePreviewSize(getItem(i)))
+            );
         }
-
         return (
           <AutoSizer>
             {({ width, height }) => (

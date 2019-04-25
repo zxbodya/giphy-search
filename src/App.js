@@ -8,7 +8,7 @@ const { Title, Paragraph } = Typography;
 class App extends Component {
   state = {
     query: '',
-    view: 'list',
+    view: 'grid',
   };
   render() {
     const { view, query } = this.state;
