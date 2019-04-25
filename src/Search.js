@@ -54,6 +54,7 @@ function Search({ query, view }) {
 
           getItemSize = index =>
             Math.max(
+              0,
               ...getIndices(index).map(i => estimatePreviewSize(getItem(i)))
             );
         }
