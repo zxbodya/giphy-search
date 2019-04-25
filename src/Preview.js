@@ -26,6 +26,7 @@ function Preview({ data }) {
   return (
     <div className={styles.container}>
       {data ? (
+        // data is loaded
         <Card
           cover={
             <div className={styles.imageWrapper}>
@@ -60,6 +61,7 @@ function Preview({ data }) {
           />
         </Card>
       ) : (
+        // preloader while waiting for actual data
         <Card
           cover={
             <div className={styles.imagePlaceholder}>

@@ -4,7 +4,8 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import InfiniteLoader from 'react-window-infinite-loader';
 import SearchLoader from './SearchLoader';
 import Preview, { estimatePreviewSize } from './Preview';
-import { Col, Row } from 'antd';
+import { Col, Row, Typography } from 'antd';
+import styles from './Search.module.css';
 
 export function viewProps(props, view) {
   const { getItem, query } = props;
@@ -77,7 +78,24 @@ function Search({ query, view }) {
           loadMoreItems,
           PreviewRow,
           getItemSize,
+          hasError,
         } = viewProps(props, view);
+        if (hasError) {
+          return (
+            <div className={styles.errorPlaceholderWrap}>
+              <Typography>
+                <Typography.Title>
+                  Error communicating with server
+                </Typography.Title>
+                <Typography.Paragraph>
+                  Something wrong with network connection or giphy server.
+                  Please try again later, by reloading the page.
+                </Typography.Paragraph>
+              </Typography>
+            </div>
+          );
+        }
+
         return (
           <AutoSizer>
             {({ width, height }) => (
